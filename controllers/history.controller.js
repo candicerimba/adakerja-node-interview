@@ -8,6 +8,24 @@ class HistoryController {
   constructor(){
     // {sender_id: its User instance}
     this.users = {};
+    this.messages = [];
+  }
+
+  addMessage(message, sender = null){
+    this.messages.push({sender, message});
+    return this.messages.length - 1;
+  }
+
+  getAllUsers(){
+    return this.users;
+  }
+
+  getAllMessages(){
+    return this.messages;
+  }
+
+  getMessageById(id){
+    return this.messages[id];
   }
 
   createTextResponse(type, message, quick_replies = null){
@@ -32,11 +50,11 @@ class HistoryController {
     // Trying to record data
     // If there's never been a conversation, no response to parse. 
     if (user.getConversationLength() > 0){
-      if (user.getLastMessage().type === MESSAGE_TYPE.ASKING_NAME){
+      if (this.getMessageById(user.getLastMessage()).message.type === MESSAGE_TYPE.ASKING_NAME){
         if (message.text){
           user.updateName(message.text);
         }
-      } else if (user.getLastMessage().type === MESSAGE_TYPE.ASKING_BIRTHDAY){
+      } else if (this.getMessageById(user.getLastMessage()).message.type === MESSAGE_TYPE.ASKING_BIRTHDAY){
         if (message.text){
           const reply = message.text;
           
@@ -56,7 +74,7 @@ class HistoryController {
             }
           }
         }
-      } else if (user.getLastMessage().type === MESSAGE_TYPE.ASKING_PARTICIPATION){
+      } else if (this.getMessageById(user.getLastMessage()).message.type === MESSAGE_TYPE.ASKING_PARTICIPATION){
         const yesReplies = ['yes', 'ye', 'y', 'sure', 'yeah', 'yep', 'yup', 'yah'];
         const noReplies = ['no', 'nah', 'n', 'nope', 'no thanks', 'nup', 'non'];
         
@@ -86,25 +104,25 @@ class HistoryController {
         response = this.createTextResponse(MESSAGE_TYPE.ASKING_NAME, "Hi there! Thanks for talking to me! My name is Wimb! I'll tell you how far your birthday is from today! But first, what is your name?");
       } 
       // If bot wants to ask for their name again
-      else if (user.getLastMessage().type === MESSAGE_TYPE.ASKING_NAME){
+      else if (this.getMessageById(user.getLastMessage()).message.type === MESSAGE_TYPE.ASKING_NAME){
         response = this.createTextResponse(MESSAGE_TYPE.ASKING_NAME, "Sorry, I didn't catch that. What is your name?");
       }
 
     // Ask for the user's birthday if not yet set
     } else if (user.bday === null){
       // If first time asking for their birthday
-      if (user.getLastMessage().type === MESSAGE_TYPE.ASKING_NAME){
+      if (this.getMessageById(user.getLastMessage()).message.type === MESSAGE_TYPE.ASKING_NAME){
         response = this.createTextResponse(MESSAGE_TYPE.ASKING_BIRTHDAY, "Nice to meet you! So, when's your birthday? Please enter in the format of YYYY-MM-DD.");
      
       // If user failed to write a correct date format
-      } else if (user.getLastMessage().type === MESSAGE_TYPE.ASKING_BIRTHDAY){
+      } else if (this.getMessageById(user.getLastMessage()).message.type === MESSAGE_TYPE.ASKING_BIRTHDAY){
         response = this.createTextResponse(MESSAGE_TYPE.ASKING_BIRTHDAY, "I don't think that looks right. Please ensure that the date you have written is correct and is in the format of YYYY-MM-DD.");  
       }
 
     // Ask if the user wants to participate if not yet set.
     } else if (user.participation === null){
       // If first time asking for their participation
-      if (user.getLastMessage().type === MESSAGE_TYPE.ASKING_BIRTHDAY){
+      if (this.getMessageById(user.getLastMessage()).message.type === MESSAGE_TYPE.ASKING_BIRTHDAY){
         response = this.createTextResponse(MESSAGE_TYPE.ASKING_PARTICIPATION, "Thanks for telling me that! Would you like to know how far your birthday is?",
         [{ title: "Yes please! 👍",
         payload: PAYLOAD_TYPE.ACCEPTED,
@@ -116,7 +134,7 @@ class HistoryController {
         }]);
 
       // If there was an error in recognizing input.
-      } else if (user.getLastMessage().type === MESSAGE_TYPE.ASKING_PARTICIPATION){
+      } else if (this.getMessageById(user.getLastMessage()).message.type === MESSAGE_TYPE.ASKING_PARTICIPATION){
         response = this.createTextResponse(MESSAGE_TYPE.ASKING_PARTICIPATION, "Sorry, I didn't catch that. Did you want to know how far your birthday is?",
         [{ title: "Yes please! 👍",
         payload: PAYLOAD_TYPE.ACCEPTED,
@@ -150,12 +168,14 @@ class HistoryController {
       response = this.createTextResponse(MESSAGE_TYPE.SENDING_BIRTHDAY, "Goodbye! 👋"); 
     }
     
-    console.log(user);
+    let id = this.addMessage({type: MESSAGE_TYPE.USER_SENT, message: message}, user);
+    user.addMessage(id); 
 
-    user.addMessage({type: MESSAGE_TYPE.USER_SENT, message: message}); 
-    
     Message.send(sender,  response.message);
-    user.addMessage(response);
+    id = this.addMessage(response);
+    user.addMessage(id); 
+
+    console.log(user);
 
   }
 }
