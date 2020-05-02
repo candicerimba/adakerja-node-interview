@@ -35,7 +35,7 @@ class WebhookController {
 
   get(req, res){
       // Your verify token. Should be a random string.
-      let VERIFY_TOKEN = "4D4K3RJ4-N0D3-1NT3RV13W";
+      let VERIFY_TOKEN = process.env.VERIFY_TOKEN;
           
       // Parse the query params
       let mode = req.query['hub.mode'];

@@ -2,6 +2,9 @@
 
 import webhookController from './controllers/webhook.controller';
 import messageController from './controllers/message.controller';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const
   express = require('express'),

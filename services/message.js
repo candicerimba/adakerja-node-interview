@@ -18,7 +18,7 @@ class Message {
       }
 
       request({
-        "uri": "https://graph.facebook.com/v6.0/me/messages?access_token=EAACZAgl7yvV0BALG1DdmGyVlCJ8j45Qy1ZCVudRc9Wwh21HBtZACOMbW34GCxUGwEuAFYZC6aR2BoJMgmNiaGLG898lKgOP6ZCDUWyfw0xjZCLsk4KUuLB8gBsHffojZCV8cDZCkS3IG8SZBbegbT4Ol1qBMXjXqxHBVoSjSPCZBdOnwZDZD",
+        "uri": `https://graph.facebook.com/v6.0/me/messages?access_token=${process.env.ACCESS_TOKEN}`,
         "method": "POST",
         "json": request_body
       }, (err, res, body) => {
