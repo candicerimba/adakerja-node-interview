@@ -19,8 +19,8 @@ class WebhookController {
           let sender_psid = webhook_event.sender.id;
 
           if (webhook_event.message && !webhook_event.message.is_echo){
-            console.log(webhook_event);
-            conversationController.process(sender_psid, webhook_event);
+            console.log("Webhook is: " + JSON.stringify(webhook_event));
+            conversationController.process(sender_psid, webhook_event.message);
           
           }
         });
