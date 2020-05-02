@@ -16,7 +16,8 @@ app.get('/webhook', webhookController.get.bind(webhookController));
 
 // Messages routes
 app.get('/messages', messageController.getAll.bind(messageController));
-app.get('/messages/:id', messageController.getByID.bind(messageController));
+app.get('/messages/:id', messageController.getById.bind(messageController));
+app.delete('/messages/:id', messageController.deleteById.bind(messageController));
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('Webhook listening on port 1337!'));

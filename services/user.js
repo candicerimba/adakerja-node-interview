@@ -5,14 +5,19 @@ class User {
     this.bday = null;
     this.participation = null;
     this.conversation = [];
+    this.lastBotQuestionType = null;
   }
 
   addMessage(message){
     this.conversation.push(message);
   }
 
-  getLastMessage(){
-    return this.conversation[this.conversation.length - 1];
+  getLastBotMessageType(){
+    return this.lastBotQuestionType;
+  }
+
+  updateLastBotMessageType(val){
+    this.lastBotQuestionType = val;
   }
 
   getConversationLength(){

@@ -12,11 +12,23 @@ class MessageController {
         }
     }
 
-    getByID(req, res){
+    getById(req, res){
         const { id } = req.params;
 
         try {
             const message = HistoryController.getMessageById(id);
+            res.status(200).send(message);
+        } catch (e) {
+            console.log(e);
+            res.status(404).send(e);
+        }
+    }
+
+    deleteById(req, res){
+        const { id } = req.params;
+
+        try {
+            const message = HistoryController.deleteMessageById(id);
             res.status(200).send(message);
         } catch (e) {
             console.log(e);
