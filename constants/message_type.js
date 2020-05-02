@@ -1,0 +1,9 @@
+const MESSAGE_TYPE = {
+    USER_SENT: 0,
+    ASKING_NAME: 1,
+    ASKING_BIRTHDAY: 2,
+    ASKING_PARTICIPATION: 3,
+    SENDING_BIRTHDAY: 4,
+}
+
+export default MESSAGE_TYPE;

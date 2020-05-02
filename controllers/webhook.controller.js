@@ -1,4 +1,4 @@
-import messageService from '../services/message';
+import conversationController from './history.controller';
 
 class WebhookController {
 
@@ -10,15 +10,19 @@ class WebhookController {
     
         // Iterates over each entry - there may be multiple if batched
         body.entry.forEach(function(entry) {
-    
+        
           // Gets the message. entry.messaging is an array, but 
           // will only ever contain one message, so we get index 0
           let webhook_event = entry.messaging[0];
-          console.log(webhook_event);
   
           // Get the sender PSID
           let sender_psid = webhook_event.sender.id;
-          messageService.print(sender_psid, webhook_event);
+
+          if (webhook_event.message && !webhook_event.message.is_echo){
+            console.log(webhook_event);
+            conversationController.process(sender_psid, webhook_event);
+          
+          }
         });
     
         // Returns a '200 OK' response to all requests
