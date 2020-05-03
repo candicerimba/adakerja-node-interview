@@ -22,9 +22,7 @@ class Message {
         "method": "POST",
         "json": request_body
       }, (err, res, body) => {
-        if (!err) {
-          console.log('Message sent!' + JSON.stringify(request_body) + res.statusCode + JSON.stringify(res.body.error));
-        } else {
+        if (err) {
           console.error("Unable to send message:" + err);
         }
       }); 

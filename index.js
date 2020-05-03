@@ -24,3 +24,5 @@ app.delete('/messages/:id', messageController.deleteById.bind(messageController)
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('Webhook listening on port 1337!'));
+
+export default app;

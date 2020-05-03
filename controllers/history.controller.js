@@ -38,10 +38,8 @@ class HistoryController {
       if (message.sender){
         const index = message.sender.conversation.indexOf(id);
         delete message.sender.conversation[index];
-        console.log(index)
-        console.log(message.sender.conversation);
+        
       };
-      console.log(message.sender);
       delete this.messages[id];
       return message;
     }
@@ -81,7 +79,7 @@ class HistoryController {
           // Manual date validity check
           if (reply.length === 10) {
             let splitted = reply.split("-");
-            if (splitted && (splitted.length === 3 || splitted[0].length === 4 || splitted[1].length === 2 || splitted[2].length === 2)) {
+            if (splitted && splitted.length === 3  && splitted[0].length === 4 && splitted[1].length === 2 && splitted[2].length === 2) {
             
               var numbers = /^[0-9]+$/;
               if(splitted.every((e) => e.match(numbers))){
