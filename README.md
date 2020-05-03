@@ -1,4 +1,6 @@
-# adakerja-node-interview
+# How Far Is Your Birthday Bot for Messenger
+
+![](demo.gif)
 
 Created for the AdaKerja Node.js interview. This is a Messenger bot that will:
   1. Ask the user for their name.
