@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "start": "nodemon transpiled/index.js"
+    "start": "node transpiled/index.js",
+    "dev": "nodemon transpiled/index.js"
   },
   "repository": {
     "type": "git",
